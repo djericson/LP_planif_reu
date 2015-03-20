@@ -2,6 +2,21 @@
 #include <fstream>
 using namespace std;
 
+int* ToHour(char* h){
+    int hour[2];
+    int h1, h2, m1, m2, ht, mt;
+    h1=int(h[0]) - 48;  //extrae el numero del char
+    h2=int(h[1]) - 48;  //extrae el numero del char
+    m1=int(h[3]) - 48;  //extrae el numero del char
+    m2=int(h[4]) - 48;  //extrae el numero del char
+    ht=h1 * 10 + h2;    //obtencion del formato horas
+    mt=m1 * 10 + m2;    //obtencion del formato minutos
+    hour[0]=ht;         //posicion de horas
+    hour[1]=mt;         //posicion de minutos
+
+    return hour;
+}
+
 
 struct Horario
 {
@@ -30,6 +45,8 @@ struct Horario
         }
     }
 };
+
+
 
 int main()
 {
