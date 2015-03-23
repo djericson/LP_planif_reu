@@ -2,10 +2,12 @@
 #include <string.h>
 #include <fstream>
 #include <list>
+#include <map>
 using namespace std;
 
-struct Intervalo
+class Intervalo
 {
+public:
     int* time_ini; //12:45 ->time_ini[0]=12 y time_ini[1]=45
     int* time_fin;
     Intervalo(int* t_ini, int* t_fin)
@@ -24,38 +26,65 @@ struct Intervalo
 
 };
 
-struct Horario
+class Horario
 {
+public:
     char dur[10];
     char file[7];
 
-    char dia[4]; //mon, tue..
+    char dia[5]; //mon, tue..
     list<Intervalo> h_ini; //lista de intervalos ejm: {(11:30-13_20)->(14:00-14:50)->null)}
     list<Intervalo> h_fin;
 
-    char f_int_ini[25];
-    char f_int_fin[25];
+    char f_int_line[150]; //el buffer que captura en una linea los intervalos, del archivo
+    list<char*> f_interv; //la lista que guardara los intervalos por separado de f_int_ini
+    list<char*> interv;
 
     Horario(char* _dur, char* file)
     {
         strcpy(dur, _dur);
         strcpy(this->file, file);
-
     }
 
     void leer()
     {
         strcat(file, ".txt");
         cout<<"file: "<<file<<endl;
+		char c; //para iterar el buffer
+		char str_interval[20]; //contendra un intervalo
         ifstream f1(file);
-        while(!f1.eof()){
+		
+        while(!f1.eof() ){
             f1.getline(dia, 5, ' ');
-            f1.getline(f_int_ini, 25, ' ');
-            f1.getline(f_int_fin, 25, '\n');
+			f1.getline(f_int_line, 150, '\n');
+			for(int i = 0, j= 0; f_int_line[i] != '\0' ; i++, j++){
+				if(f_int_line[i] != ' ' && f_int_line[i+1] != '\0')
+					str_interval[j] = f_int_line[i];
+				else{
+					if(f_int_line[i+1] == '\0'){
+						str_interval[j] = f_int_line[i];
+						str_interval[j+1] = '\0';
+					}
+					else
+						str_interval[j] = '\0';
+					j = -1;
+					interv.push_back(str_interval);
+					str_interval[0] = '\0';
+				}
+			}
 
-            cout<<dia<<", "<<f_int_ini<<", "<<f_int_fin<<"\n";
-            break;
+			list<char*>::iterator it;
+			for (it = interv.begin(); it != interv.end(); ++it){
+			    cout << "; " << (*it) <<endl;
+			}
+            //cout<<dia<<", "<<f_int_line<<"\n";
         }
+
+        //list<char*>::iterator it;
+        //for (it = interv.begin(); it != interv.end(); ++it){
+        //    cout << '; ' << (*it) <<endl;
+        //}
+
     }
 };
 
@@ -129,7 +158,7 @@ int main()
 	cout<<res[0]<<":"<<res[1]<<endl;
 
     Horario h1(duracion, a1);
-    strcpy(h1.dia, "mon");
+    //strcpy_s(h1.dia, "mon");
 
     //cout<<"h1.dia: "<<h1.dia<<endl;
     list<Intervalo> e1;
