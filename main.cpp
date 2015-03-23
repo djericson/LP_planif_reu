@@ -141,6 +141,22 @@ vector <int> ToHour(char* h){
     return hour;
 }
 
+int* Deduct(int* a, int* b){
+	int* total = new int [2];
+	total[0] = b[0] - a[0];
+
+	tmp = b[1] - a[1];
+	if(tmp < 0){
+		total[1] = 60 - tmp;
+		total[0] = total[0] - 1;
+		return total;
+	
+	}
+	
+	total[1] = tmp;
+	return total;
+}
+
 int main()
 {
     char duracion[10]; // = {"00:45 a e"};
