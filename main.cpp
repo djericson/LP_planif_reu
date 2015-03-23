@@ -3,6 +3,7 @@
 #include <fstream>
 #include <list>
 #include <map>
+#include <vector>
 using namespace std;
 
 class Intervalo
@@ -53,7 +54,7 @@ public:
 		char c; //para iterar el buffer
 		char str_interval[20]; //contendra un intervalo
         ifstream f1(file);
-		
+
         while(!f1.eof() ){
             f1.getline(dia, 5, ' ');
 			f1.getline(f_int_line, 150, '\n');
@@ -125,18 +126,18 @@ struct Datos_prueba{
 
 };
 
-int* ToHour(char* h){
-    int* hour = new int[2];
+vector <int> ToHour(char* h){
+    vector <int> hour;
     int h1, h2, m1, m2, ht, mt;
-    h1 = int(h[0]) - 48;  //extrae el numero del char
-    h2 = int(h[1]) - 48;  //extrae el numero del char
-    m1 = int(h[3]) - 48;  //extrae el numero del char
-    m2 = int(h[4]) - 48;  //extrae el numero del char
-    ht = h1 * 10 + h2;    //obtencion del formato horas
-    mt = m1 * 10 + m2;    //obtencion del formato minutos
-    hour[0] = ht;         //posicion de horas
-    hour[1] = mt;         //posicion de minutos
-
+    h1=int(h[0]) - 48;
+    h2=int(h[1]) - 48;
+    m1=int(h[3]) - 48;
+    m2=int(h[4]) - 48;
+    ht=h1 * 10 + h2;
+    mt=m1 * 10 + m2;
+    //cout<<h1<<" "<<h2<<" "<<m1<<" "<<m2<<endl;
+    hour.push_back(ht);
+    hour.push_back(mt);
     return hour;
 }
 
