@@ -175,6 +175,18 @@ struct Datos_prueba{
     }
 };
 
+struct Horas{
+    Horas();
+    int h_ini;
+    int h_fin;
+    int m_ini;
+    int m_fin;
+};
+
+struct Schedule{
+    map< string,vector<Horas> > day;
+};
+
 int main()
 {
     char duracion[10]; // = {"00:45 a e"};
